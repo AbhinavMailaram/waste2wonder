@@ -129,10 +129,11 @@ function CreatePostPage() {
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               {processImages.map((src) => (
                 <div key={src} className="relative">
-                  <img
-                    src={src}
-                    alt="Process step"
-                    className="h-24 w-full rounded-xl brutal-border object-cover"
+                  <div
+                    role="img"
+                    aria-label="Process step"
+                    className="h-24 w-full rounded-xl brutal-border bg-cover bg-center"
+                    style={{ backgroundImage: `url('${sanitizeImageSrc(src)}')` }}
                   />
                   <button
                     onClick={() => setProcessImages((prev) => prev.filter((img) => img !== src))}
@@ -194,4 +195,17 @@ function UploadTile({ label, onPick }: { label: string; onPick: (src: string) =>
       />
     </label>
   );
+}
+
+function sanitizeImageSrc(src: string) {
+  if (src.startsWith("data:image/")) return src;
+  try {
+    const base =
+      typeof window !== "undefined" ? window.location.origin : "https://waste2wonder.local";
+    const parsed = new URL(src, base);
+    if (["http:", "https:", "blob:"].includes(parsed.protocol)) return src;
+  } catch {
+    return "";
+  }
+  return "";
 }

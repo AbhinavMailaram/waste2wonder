@@ -211,18 +211,20 @@ function ReferenceDetailPage() {
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             {finalImage ? (
-              <img
-                src={finalImage}
-                alt="Final upload"
-                className="h-28 w-full rounded-xl brutal-border object-cover"
+              <div
+                role="img"
+                aria-label="Final upload"
+                className="h-28 w-full rounded-xl brutal-border bg-cover bg-center"
+                style={{ backgroundImage: `url('${sanitizeImageSrc(finalImage)}')` }}
               />
             ) : null}
             {progressImages.map((src) => (
-              <img
+              <div
                 key={src}
-                src={src}
-                alt="Progress upload"
-                className="h-28 w-full rounded-xl brutal-border object-cover"
+                role="img"
+                aria-label="Progress upload"
+                className="h-28 w-full rounded-xl brutal-border bg-cover bg-center"
+                style={{ backgroundImage: `url('${sanitizeImageSrc(src)}')` }}
               />
             ))}
           </div>
@@ -240,4 +242,17 @@ function ReferenceDetailPage() {
       </main>
     </div>
   );
+}
+
+function sanitizeImageSrc(src: string) {
+  if (src.startsWith("data:image/")) return src;
+  try {
+    const base =
+      typeof window !== "undefined" ? window.location.origin : "https://waste2wonder.local";
+    const parsed = new URL(src, base);
+    if (["http:", "https:", "blob:"].includes(parsed.protocol)) return src;
+  } catch {
+    return "";
+  }
+  return "";
 }

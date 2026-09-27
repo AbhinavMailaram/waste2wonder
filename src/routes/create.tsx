@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LiveBackground from "@/components/LiveBackground";
 import SiteNav from "@/components/SiteNav";
 import { useFrontendState } from "@/lib/frontend-state";
@@ -20,10 +20,23 @@ export const Route = createFileRoute("/create")({
 
 function CreatePage() {
   const { references, likeReference } = useFrontendState();
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [materialGuess, setMaterialGuess] = useState("");
   const [craftGuess, setCraftGuess] = useState("");
-  const previewImages = useMemo(() => files.filter((src) => src.startsWith("blob:")), [files]);
+  const previewImages = useMemo(
+    () =>
+      files.map((file) => ({
+        key: `${file.name}-${file.lastModified}`,
+        src: URL.createObjectURL(file),
+      })),
+    [files],
+  );
+
+  useEffect(() => {
+    return () => {
+      previewImages.forEach((image) => URL.revokeObjectURL(image.src));
+    };
+  }, [previewImages]);
 
   const matches = useMemo(() => {
     if (!materialGuess.trim()) return references.slice(0, 4);
@@ -36,11 +49,7 @@ function CreatePage() {
 
   function onUpload(fileList: FileList | null) {
     if (!fileList) return;
-    const urls = Array.from(fileList)
-      .slice(0, 4)
-      .map((file) => URL.createObjectURL(file))
-      .filter((src) => src.startsWith("blob:"));
-    setFiles(urls);
+    setFiles(Array.from(fileList).slice(0, 4));
   }
 
   return (
@@ -95,12 +104,13 @@ function CreatePage() {
                   Upload an image to preview and run demo analysis.
                 </div>
               ) : (
-                previewImages.map((src) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt="Uploaded preview"
-                    className="h-36 w-full rounded-xl brutal-border object-cover"
+                previewImages.map((image) => (
+                  <div
+                    key={image.key}
+                    role="img"
+                    aria-label="Uploaded preview"
+                    className="h-36 w-full rounded-xl brutal-border bg-cover bg-center"
+                    style={{ backgroundImage: `url('${sanitizeImageSrc(image.src)}')` }}
                   />
                 ))
               )}
@@ -193,4 +203,17 @@ function CreatePage() {
       </main>
     </div>
   );
+}
+
+function sanitizeImageSrc(src: string) {
+  if (src.startsWith("data:image/")) return src;
+  try {
+    const base =
+      typeof window !== "undefined" ? window.location.origin : "https://waste2wonder.local";
+    const parsed = new URL(src, base);
+    if (["http:", "https:", "blob:"].includes(parsed.protocol)) return src;
+  } catch {
+    return "";
+  }
+  return "";
 }
