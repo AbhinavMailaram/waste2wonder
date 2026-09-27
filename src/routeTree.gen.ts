@@ -9,45 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as CommunityRouteImport } from './routes/community'
-import { Route as ContestRouteImport } from './routes/contest'
-import { Route as CreateRouteImport } from './routes/create'
-import { Route as CreatePostRouteImport } from './routes/create-post'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
-import { Route as ReferenceIdRouteImport } from './routes/reference.$id'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CommunityRoute = CommunityRouteImport.update({
-  id: '/community',
-  path: '/community',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContestRoute = ContestRouteImport.update({
-  id: '/contest',
-  path: '/contest',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreateRoute = CreateRouteImport.update({
-  id: '/create',
-  path: '/create',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreatePostRoute = CreatePostRouteImport.update({
-  id: '/create-post',
-  path: '/create-post',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -55,9 +26,19 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductIdRoute = ProductIdRouteImport.update({
@@ -65,143 +46,69 @@ const ProductIdRoute = ProductIdRouteImport.update({
   path: '/product/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReferenceIdRoute = ReferenceIdRouteImport.update({
-  id: '/reference/$id',
-  path: '/reference/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/community': typeof CommunityRoute
-  '/contest': typeof ContestRoute
-  '/create': typeof CreateRoute
-  '/create-post': typeof CreatePostRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/product/$id': typeof ProductIdRoute
-  '/reference/$id': typeof ReferenceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/community': typeof CommunityRoute
-  '/contest': typeof ContestRoute
-  '/create': typeof CreateRoute
-  '/create-post': typeof CreatePostRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/product/$id': typeof ProductIdRoute
-  '/reference/$id': typeof ReferenceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/community': typeof CommunityRoute
-  '/contest': typeof ContestRoute
-  '/create': typeof CreateRoute
-  '/create-post': typeof CreatePostRoute
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
   '/product/$id': typeof ProductIdRoute
-  '/reference/$id': typeof ReferenceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/community'
-    | '/contest'
-    | '/create'
-    | '/create-post'
     | '/login'
     | '/profile'
     | '/signup'
     | '/product/$id'
-    | '/reference/$id'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/community'
-    | '/contest'
-    | '/create'
-    | '/create-post'
-    | '/login'
-    | '/profile'
-    | '/signup'
-    | '/product/$id'
-    | '/reference/$id'
+  to: '/' | '/community' | '/login' | '/profile' | '/signup' | '/product/$id'
   id:
     | '__root__'
     | '/'
     | '/community'
-    | '/contest'
-    | '/create'
-    | '/create-post'
     | '/login'
     | '/profile'
     | '/signup'
     | '/product/$id'
-    | '/reference/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CommunityRoute: typeof CommunityRoute
-  ContestRoute: typeof ContestRoute
-  CreateRoute: typeof CreateRoute
-  CreatePostRoute: typeof CreatePostRoute
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
   ProductIdRoute: typeof ProductIdRoute
-  ReferenceIdRoute: typeof ReferenceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/community': {
-      id: '/community'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof CommunityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contest': {
-      id: '/contest'
-      path: '/contest'
-      fullPath: '/contest'
-      preLoaderRoute: typeof ContestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/create': {
-      id: '/create'
-      path: '/create'
-      fullPath: '/create'
-      preLoaderRoute: typeof CreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/create-post': {
-      id: '/create-post'
-      path: '/create-post'
-      fullPath: '/create-post'
-      preLoaderRoute: typeof CreatePostRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -211,11 +118,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/product/$id': {
@@ -225,38 +146,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reference/$id': {
-      id: '/reference/$id'
-      path: '/reference/$id'
-      fullPath: '/reference/$id'
-      preLoaderRoute: typeof ReferenceIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CommunityRoute: CommunityRoute,
-  ContestRoute: ContestRoute,
-  CreateRoute: CreateRoute,
-  CreatePostRoute: CreatePostRoute,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
   ProductIdRoute: ProductIdRoute,
-  ReferenceIdRoute: ReferenceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
