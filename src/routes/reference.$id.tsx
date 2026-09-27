@@ -186,7 +186,8 @@ function ReferenceDetailPage() {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  setFinalImage(URL.createObjectURL(file));
+                  const previewUrl = URL.createObjectURL(file);
+                  if (previewUrl.startsWith("blob:")) setFinalImage(previewUrl);
                 }}
               />
             </label>
@@ -199,7 +200,11 @@ function ReferenceDetailPage() {
                 className="sr-only"
                 onChange={(e) => {
                   const files = Array.from(e.target.files ?? []);
-                  setProgressImages(files.map((file) => URL.createObjectURL(file)));
+                  setProgressImages(
+                    files
+                      .map((file) => URL.createObjectURL(file))
+                      .filter((src) => src.startsWith("blob:")),
+                  );
                 }}
               />
             </label>

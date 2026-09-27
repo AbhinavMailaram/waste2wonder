@@ -23,6 +23,7 @@ function CreatePage() {
   const [files, setFiles] = useState<string[]>([]);
   const [materialGuess, setMaterialGuess] = useState("");
   const [craftGuess, setCraftGuess] = useState("");
+  const previewImages = useMemo(() => files.filter((src) => src.startsWith("blob:")), [files]);
 
   const matches = useMemo(() => {
     if (!materialGuess.trim()) return references.slice(0, 4);
@@ -35,11 +36,11 @@ function CreatePage() {
 
   function onUpload(fileList: FileList | null) {
     if (!fileList) return;
-    setFiles(
-      Array.from(fileList)
-        .slice(0, 4)
-        .map((file) => URL.createObjectURL(file)),
-    );
+    const urls = Array.from(fileList)
+      .slice(0, 4)
+      .map((file) => URL.createObjectURL(file))
+      .filter((src) => src.startsWith("blob:"));
+    setFiles(urls);
   }
 
   return (
@@ -89,12 +90,12 @@ function CreatePage() {
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {files.length === 0 ? (
+              {previewImages.length === 0 ? (
                 <div className="col-span-full rounded-2xl brutal-border bg-brand-lilac/40 p-4 text-sm font-medium">
                   Upload an image to preview and run demo analysis.
                 </div>
               ) : (
-                files.map((src) => (
+                previewImages.map((src) => (
                   <img
                     key={src}
                     src={src}

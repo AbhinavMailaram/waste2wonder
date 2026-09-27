@@ -119,7 +119,9 @@ function CreatePostPage() {
                     const previews = Array.from(e.target.files ?? []).map((file) =>
                       URL.createObjectURL(file),
                     );
-                    setProcessImages((prev) => [...prev, ...previews].slice(0, 6));
+                    setProcessImages((prev) =>
+                      [...prev, ...previews.filter((src) => src.startsWith("blob:"))].slice(0, 6),
+                    );
                   }}
                 />
               </label>
@@ -186,7 +188,8 @@ function UploadTile({ label, onPick }: { label: string; onPick: (src: string) =>
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (!file) return;
-          onPick(URL.createObjectURL(file));
+          const previewUrl = URL.createObjectURL(file);
+          if (previewUrl.startsWith("blob:")) onPick(previewUrl);
         }}
       />
     </label>
